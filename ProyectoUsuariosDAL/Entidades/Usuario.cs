@@ -15,5 +15,6 @@ namespace ProyectoUsuariosDAL.Entidades
         public string Apellido { get; set; }
 
         public int Edad { get; set; }
+        public DateTime FechaCreacion { get; set; }
     }
 }

@@ -22,6 +22,57 @@ namespace ProyectoUsuariosBLL.Servicios
             _mapper = mapper;
         }
 
+        public async Task<CustomResponse<UsuarioDto>> ActualizarUsuarioAsync(UsuarioDto usuarioDto)
+        {
+            var respuesta = new CustomResponse<UsuarioDto>();
+            var usuario = _mapper.Map<Usuario>(usuarioDto);
+            if (!await _usuariosRepositorio.ActualizarUsuarioAsync(usuario))
+            {
+                respuesta.EsError = true;
+                respuesta.Mensaje = "No se pudo actualizar el usuario";
+                return respuesta;
+            }
+            return respuesta;
+        }
+
+        public async Task<CustomResponse<UsuarioDto>> EliminarUsuarioAsync(int id)
+        {
+            var respuesta = new CustomResponse<UsuarioDto>();
+
+            if (!await _usuariosRepositorio.EliminarUsuarioAsync(id))
+            {
+                respuesta.EsError = true;
+                respuesta.Mensaje = "No se pudo eliminar el usuario";
+                return respuesta;
+            }
+
+            return respuesta;
+
+        }
+
+        public async Task<CustomResponse<UsuarioDto>> AgregarUsuarioAsync(UsuarioDto usuarioDto)
+        {
+            var respuesta = new CustomResponse<UsuarioDto>();
+
+            //validaciones de negocio
+            if (usuarioDto.Edad > 65)
+            {
+                respuesta.EsError = true;
+                respuesta.Mensaje = "No se pueden agregar usuarios mayores de 65 años";
+                return respuesta;
+            }
+
+            //El repositorio me indica si pudo o no agregar el usuario
+            if(!await _usuariosRepositorio.AgregarUsuarioAsync(_mapper.Map<Usuario>(usuarioDto)))
+            {
+                respuesta.EsError = true;
+                respuesta.Mensaje = "No se pudo agregar el usuario";
+                return respuesta;
+            }
+
+
+            return respuesta;
+        }
         public async Task<CustomResponse<UsuarioDto>> ObtenerUsuarioPorIdAsync(int id)
         {
             var respuesta = new CustomResponse<UsuarioDto>();           
@@ -38,7 +89,6 @@ namespace ProyectoUsuariosBLL.Servicios
             return respuesta;
             
         }
-
         public async Task<CustomResponse<List<UsuarioDto>>> ObtenerUsuariosAsync()
         {
             var respuesta = new CustomResponse<List<UsuarioDto>>();
@@ -47,7 +97,6 @@ namespace ProyectoUsuariosBLL.Servicios
             respuesta.Data = usuariosDto;
             return respuesta;
         }
-
         private CustomResponse<UsuarioDto> validar(Usuario usuario)
         {
             var respuesta = new CustomResponse<UsuarioDto>();
