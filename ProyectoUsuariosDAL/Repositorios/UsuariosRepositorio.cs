@@ -46,6 +46,7 @@ namespace ProyectoUsuariosDAL.Repositorios
 
         public async Task<Usuario> ObtenerUsuarioPorIdAsync(int id)
         {
+            //SP //API // ETC
             var usuario = usuarios.FirstOrDefault(u => u.Id == id);
             return usuario;
         }
