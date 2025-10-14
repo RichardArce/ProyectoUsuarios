@@ -17,7 +17,7 @@ namespace ProyectoUsuariosBLL.Dtos
         public CustomResponse()
         {
             EsError = false;
-            Mensaje = string.Empty;
+            Mensaje = "Acción realizada correctamente";
         }
     }
 }

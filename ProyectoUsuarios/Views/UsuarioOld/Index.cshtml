@@ -1,0 +1,39 @@
+﻿@using ProyectoUsuariosBLL.Dtos
+
+@model List<UsuarioDto>
+
+@{
+    ViewData["Title"] = "Lista de Usuarios";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Crear Nuevo Usuario</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Id</td>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Apellido</td>
+                <td>@usuario.Edad</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@usuario.Id" class="btn btn-primary btn-sm">Editar</a>
+                    <a asp-action="Details" asp-route-id="@usuario.Id" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@usuario.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

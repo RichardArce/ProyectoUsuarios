@@ -1,30 +1,42 @@
-﻿@using ProyectoUsuariosBLL.Dtos
-@model UsuarioDto
+﻿@model ProyectoUsuariosBLL.Dtos.UsuarioDto
 
-@{
-    ViewData["Title"] = "Editar Usuario";
-}
+<!-- Modal -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-<h1>Editar Usuario</h1>
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Editar Registro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+            <div class="modal-body">
+                <form id="formEditarUsuario" asp-action="EditarUsuario" method="post">
+                    <input type="hidden" asp-for="Id" id="UsuarioId"/>
+                    @Html.AntiForgeryToken()
+                    <div class="form-group mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" id="Nombre"/>
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Apellido" class="form-label"></label>
+                        <input asp-for="Apellido" class="form-control" id="Apellido"/>
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Edad" class="form-label"></label>
+                        <input asp-for="Edad" class="form-control" type="number" id="Edad"/>
+                        <span asp-validation-for="Edad" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btnEditarCambios">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Apellido"></label>
-        <input asp-for="Apellido" class="form-control" />
-        <span asp-validation-for="Apellido" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Edad"></label>
-        <input asp-for="Edad" class="form-control" />
-        <span asp-validation-for="Edad" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
-</form>
+</div>

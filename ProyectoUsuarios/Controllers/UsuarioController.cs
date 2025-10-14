@@ -20,91 +20,56 @@ namespace ProyectoUsuarios.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var respuesta = await _usuariosServicio.ObtenerUsuariosAsync();
-            return View(respuesta.Data);
-        }
-
-        //GET: Usuario/Create
-        public IActionResult Create()
-        {
+            ViewData["Title"] = "Listado de Usuarios";
             return View();
         }
-        //insertar con un get VULNERABLE
-        //POST: Usuario/Create
-        [HttpPost] //->seguridad formulario
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UsuarioDto usuarioDto)
+
+        public async Task<IActionResult> ObtenerUsuarios()
         {
-            if (ModelState.IsValid)
-            {
-                var respuesta = await _usuariosServicio.AgregarUsuarioAsync(usuarioDto);
-                if (!respuesta.EsError)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                ModelState.AddModelError(string.Empty, respuesta.Mensaje);
-            }
-            return View(usuarioDto);
+            var respuesta = await _usuariosServicio.ObtenerUsuariosAsync();
+            return Json(respuesta);
         }
 
-        //GET: Usuario/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        [HttpPost] //->seguridad formulario
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CrearUsuario(UsuarioDto usuarioDto)
+        {
+            if(!ModelState.IsValid)
+            {
+                return Json(new CustomResponse<UsuarioDto> { EsError = true, Mensaje = "Error de validación" });
+            }
+
+            var response = await _usuariosServicio.AgregarUsuarioAsync(usuarioDto);
+            return Json(response);
+        }
+
+        public async Task<IActionResult> ObtenerUsuarioPorId(int id)
         {
             var respuesta = await _usuariosServicio.ObtenerUsuarioPorIdAsync(id);
-            if (respuesta.EsError)
-            {   
-                return NotFound();
-            }
-            return View(respuesta.Data);
+            return Json(respuesta);
         }
 
         //POST: Usuario/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UsuarioDto usuarioDto)
+        public async Task<IActionResult> EditarUsuario(UsuarioDto usuarioDto)
         {
-            if (id != usuarioDto.Id)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return Json(new CustomResponse<UsuarioDto> { EsError = true, Mensaje = "Error de validación" });
             }
-            if (ModelState.IsValid)
-            {
-                var respuesta = await _usuariosServicio.ActualizarUsuarioAsync(usuarioDto);
-                if (!respuesta.EsError)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                ModelState.AddModelError(string.Empty, respuesta.Mensaje);
-            }
-            return View(usuarioDto);
-        }
 
-        //GET: Usuario/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var respuesta = await _usuariosServicio.ObtenerUsuarioPorIdAsync(id);
-            if (respuesta.EsError)
-            {
-                return NotFound();
-            }
-            return View(respuesta.Data);
+            var respuesta = await _usuariosServicio.ActualizarUsuarioAsync(usuarioDto);
+            return Json(respuesta);
         }
 
         //POST: Usuario/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> EliminarUsuario(int id)
         {
-            var respuesta = await _usuariosServicio.EliminarUsuarioAsync(id);
-            if (!respuesta.EsError)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            ModelState.AddModelError(string.Empty, respuesta.Mensaje);
-            return View("Delete", respuesta.Data);
+            var respuesta = await _usuariosServicio.EliminarUsuarioAsync(id);           
+            return Json(respuesta);
         }
-
-
 
     }
 }
