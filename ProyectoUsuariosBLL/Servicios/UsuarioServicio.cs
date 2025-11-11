@@ -55,10 +55,10 @@ namespace ProyectoUsuariosBLL.Servicios
             var respuesta = new CustomResponse<UsuarioDto>();
 
             //validaciones de negocio
-            if (usuarioDto.Edad > 65)
+            if (usuarioDto.Edad > 65) //REGLA NEGOCIO
             {
                 respuesta.EsError = true;
-                respuesta.Mensaje = "No se pueden agregar usuarios mayores de 65 años";
+                respuesta.Mensaje = "No se pueden agregar usuarios mayores de 65 años"; //MENSAJE REGLA NEGOCIO
                 return respuesta;
             }
 
