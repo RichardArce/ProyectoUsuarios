@@ -1,3 +1,4 @@
+using ProyectoUsuarios.Middleware;
 using ProyectoUsuariosBLL.Mapeos;
 using ProyectoUsuariosBLL.Servicios;
 using ProyectoUsuariosDAL.Entidades;
@@ -29,6 +30,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+
+app.UseMiddleware<ExceptionHandler>(); // REGISTRA EL MIDDLEWARE
 
 app.MapControllerRoute(
     name: "default",

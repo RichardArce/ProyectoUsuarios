@@ -177,6 +177,13 @@
                                     icon: 'error',
                                 });
                             }
+                        },
+                        error: function (exceptionResponse) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: exceptionResponse.responseJSON.mensaje,
+                                icon: 'error',
+                            });
                         }
                     });
                 }

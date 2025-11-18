@@ -67,8 +67,8 @@ namespace ProyectoUsuarios.Controllers
         [HttpPost]
         public async Task<IActionResult> EliminarUsuario(int id)
         {
-            var respuesta = await _usuariosServicio.EliminarUsuarioAsync(id);           
-            return Json(respuesta);
+            throw new NotImplementedException();
+            //return Json(respuesta);
         }
 
     }
