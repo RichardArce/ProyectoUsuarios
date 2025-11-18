@@ -1,7 +1,9 @@
 ﻿using ProyectoUsuariosDAL.Entidades;
+using ProyectoUsuariosDAL.RespuestasAPIS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +18,14 @@ namespace ProyectoUsuariosDAL.Repositorios
             new Usuario { Id = 3, Nombre = "Carlos", Apellido = "López", Edad = 28 }
         };
 
+        private readonly HttpClient _httpClient;
+
+        public UsuariosRepositorio(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+
         public async Task<bool> ActualizarUsuarioAsync(Usuario usuario)
         {
             var usuarioExistente = usuarios.FirstOrDefault(u => u.Id == usuario.Id);
@@ -28,9 +38,17 @@ namespace ProyectoUsuariosDAL.Repositorios
 
         public async Task<bool> AgregarUsuarioAsync(Usuario usuario)
         {
-            usuario.Id = usuarios.Any() ? usuarios.Max(u => u.Id) + 1 : 1;
-            usuarios.Add(usuario);
-            return true;
+            var informacion = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(usuario),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await _httpClient.PostAsync("https://localhost:7267/Usuarios", informacion);
+
+
+            return response.IsSuccessStatusCode;
+
         }
 
         public async Task<bool> EliminarUsuarioAsync(int id)
@@ -53,7 +71,9 @@ namespace ProyectoUsuariosDAL.Repositorios
 
         public async Task<List<Usuario>> ObtenerUsuariosAsync()
         {
-            return usuarios;
+            var response = await _httpClient.GetFromJsonAsync<RespuestaApiUsuarios<List<Usuario>>>("https://localhost:7267/Usuarios");
+
+            return response.Data ?? new List<Usuario>(); //DEPENDEMOS DE UN COMPONENTE EXTERNO
         }
     }
 }

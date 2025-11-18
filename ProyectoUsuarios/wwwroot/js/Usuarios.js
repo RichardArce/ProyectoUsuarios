@@ -12,7 +12,14 @@
                 ajax: {
                     url: '/Usuario/ObtenerUsuarios',
                     type: 'GET',
-                    dataSrc: 'data'
+                    dataSrc: 'data',
+                    error: function (exceptionResponse) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: exceptionResponse.responseJSON.mensaje,
+                            icon: 'error',
+                        });
+                    }
                 },
                 columns: [
                     { data: 'id', title: 'ID' },
@@ -88,6 +95,13 @@
                         });
                     }
 
+                },
+                error: function (exceptionResponse) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: exceptionResponse.responseJSON.mensaje,
+                        icon: 'error',
+                    });
                 }
 
 

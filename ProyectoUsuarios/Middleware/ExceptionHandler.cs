@@ -34,7 +34,7 @@
             {
                 NotImplementedException _ => new ExceptionResponse(System.Net.HttpStatusCode.NotImplemented, "Funcionalidad no implementada"),
                 KeyNotFoundException _ => new ExceptionResponse(System.Net.HttpStatusCode.NotFound, "Recurso no encontrado"),
-
+                HttpRequestException _ => new ExceptionResponse(System.Net.HttpStatusCode.BadGateway, "Error al comunicarse con la API USUARIOS"),
                 _ => new ExceptionResponse(System.Net.HttpStatusCode.InternalServerError, "Ocurrió un error interno del servidor"), //DEFAULT
             };
 

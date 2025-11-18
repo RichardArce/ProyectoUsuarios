@@ -14,6 +14,8 @@ builder.Services.AddSingleton<IUsuariosServicio, UsuarioServicio>(); //Mala prac
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(MapeoClases));
 
+builder.Services.AddHttpClient<IUsuariosRepositorio, UsuariosRepositorio>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
